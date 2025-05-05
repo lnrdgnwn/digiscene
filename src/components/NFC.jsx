@@ -25,19 +25,19 @@ function Nfc({ onChangeNfcStatus, onScan }) {
       });
 
       changeNfcStatus(true);
-      setNfcError(false); // Reset error
+
     } else {
       setNfcError(true);
     }
   };
 
   const handleNfcRead = async () => {
-    setNfcError(false); // Reset error di awal klik
+    setNfcError(false);
 
-    if (!("NDEFReader" in window)) {
-      setNfcError(true);
-      return;
-    }
+    // if (!("NDEFReader" in window)) {
+    //   setNfcError(true);
+    //   return;
+    // }
 
     try {
       const reader = new NDEFReader();
@@ -83,7 +83,7 @@ function Nfc({ onChangeNfcStatus, onScan }) {
 
         <button
           onClick={handleNfcRead}
-          className="w-full text-center font-bold cursor-pointer text-white text-2xl bg-blue-950 px-6 py-3 rounded-md"
+          className="w-full text-center active:scale-98 active:shadow-inner  hover:bg-blue-900 font-bold cursor-pointer text-white text-2xl bg-blue-950 px-6 py-3 rounded-md"
         >
           {nfcError ? 'Scan Lagi' : 'Scan Sekarang'}
         </button>

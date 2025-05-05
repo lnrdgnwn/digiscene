@@ -234,7 +234,7 @@ function Form({ nfcData, time, date }) {
                 <div className="flex px-3 py-1">
                     <button
                         type="submit"
-                        className="w-full font-bold text-white text-2xl bg-blue-950 px-6 py-3 rounded-md cursor-pointer">
+                        className="w-full font-bold text-white text-2xl bg-blue-950 active:scale-98 active:shadow-inner  hover:bg-blue-900 px-6 py-3 rounded-md cursor-pointer">
                         Kirim Data
                     </button>
                 </div>
@@ -267,7 +267,7 @@ function Form({ nfcData, time, date }) {
                         <FontAwesomeIcon icon={faCircleExclamation} style={{color: "#E57373",}} size="6x"/>
                         <h2 className="font-bold text-3xl text-[#E57373]">Error</h2>
                         <p className="font-Bold text-[#E57373] pb-1 text-lg">Terjadi Error Saat Pengiriman Data</p>
-                        <button  onClick={handleRetryClose} className="text-white font-bold px-6 py-2 bg-[#E57373] rounded-md cursor-pointer">RETRY</button>
+                        <button onClick={handleRetryClose} className="text-white font-bold px-6 py-2 bg-[#E57373] rounded-md cursor-pointer">RETRY</button>
                         </div>
                     </div>
                 )}
