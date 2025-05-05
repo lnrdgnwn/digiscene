@@ -24,8 +24,6 @@ function Nfc({ onChangeNfcStatus, onScan }) {
         jurusan: jurusan.trim(),
       });
 
-      console.log(typeof(nim));
-
       changeNfcStatus(true);
       setNfcError(false); // Reset error
     } else {

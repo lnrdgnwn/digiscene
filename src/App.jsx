@@ -52,8 +52,6 @@ function App() {
     setNfcStatus(newStatus);
   }
 
-  console.log(nfcStatus);
-
   return (
     <div className="relative flex flex-col items-center">
       <Header nfcStatus={nfcStatus} time ={time.substring(0, 5)} date={date} />

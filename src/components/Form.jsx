@@ -93,7 +93,6 @@ function Form({ nfcData, time, date }) {
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log("Form berhasil dikirim:", data);
                 setSubmitFormStatus("success");
             })
             .catch((err) => {
