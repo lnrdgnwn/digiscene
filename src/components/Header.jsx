@@ -1,33 +1,6 @@
 import { useEffect, useState } from "react";
 
-function Header({ nfcStatus }) {
-  const [time, setTime] = useState("");
-  const [date, setDate] = useState("");
-
-  const updateDateTime = () => {
-    const now = new Date();
-    const formattedTime = now.toLocaleTimeString("id-ID").replace(/\./g, ":");
-    const formattedDate = now.toLocaleDateString("id-ID", {
-      timeZone: "Asia/Jakarta",
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-
-    setTime(formattedTime.substring(0, 5));
-    setDate(formattedDate);
-  };
-
-  useEffect(() => {
-    updateDateTime();
-
-    const interval = setInterval(() => {
-      updateDateTime();
-    }, 60000); // update per menit
-
-    return () => clearInterval(interval);
-  }, []);
+function Header({ nfcStatus, time, date }) {
 
     return (
         <>
