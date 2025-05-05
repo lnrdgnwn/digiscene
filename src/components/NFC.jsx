@@ -37,9 +37,6 @@ function Nfc({ onChangeNfcStatus, onScan }) {
     setNfcError(false); // Reset error di awal klik
 
     if (!("NDEFReader" in window)) {
-    //   Fallback ke dummy data jika NFC tidak didukung
-      const dummyData = `Nama: Darrell Satriano\nNIM: 09021282328049\nJurusan: Teknik Informatika`;
-      parseAndSend(dummyData);
       setNfcError(true);
       return;
     }
