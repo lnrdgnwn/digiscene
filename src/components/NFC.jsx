@@ -24,6 +24,8 @@ function Nfc({ onChangeNfcStatus, onScan }) {
         jurusan: jurusan.trim(),
       });
 
+      console.log(typeof(nim));
+
       changeNfcStatus(true);
       setNfcError(false); // Reset error
     } else {
@@ -38,7 +40,7 @@ function Nfc({ onChangeNfcStatus, onScan }) {
     //   Fallback ke dummy data jika NFC tidak didukung
       const dummyData = `Nama: Darrell Satriano\nNIM: 09021282328049\nJurusan: Teknik Informatika`;
       parseAndSend(dummyData);
-    setNfcError(true);
+      setNfcError(true);
       return;
     }
 
@@ -71,12 +73,12 @@ function Nfc({ onChangeNfcStatus, onScan }) {
       <div className="flex flex-col w-full justify-center items-center rounded-[12px] bg-white shadow-2xl">
         <div className="relative w-full flex justify-center items-center p-6">
         {nfcError ? 
-         <img src="img/whiteNFC.png" alt="NFC Icon" className="transition-all duration-300 blur-[2px]"/>
+         <img src="img/whiteNFC.png" alt="NFC Icon" className="tranisiton-opacity duration-3000 ease-in blur-[2px]"/>
          : 
-         <img src="img/NFC.png" alt="NFC Icon" className="transition-all duration-300"/>}
+         <img src="img/NFC.png" alt="NFC Icon" className="transition-opacity duration-3000 ease-out"/>}
 
           {nfcError && (
-            <div className="absolute inset-0 flex items-center px-3  justify-center text-red-500">
+            <div className="absolute inset-0 flex items-center px-3 transition-opacity justify-center text-red-500">
               <p className=" text-center text-2xl bg-white/60 font-semibold border border-red-500 py-3 rounded-md text-red-500">
                 NFC tidak didukung atau gagal membaca!
               </p>
@@ -88,7 +90,7 @@ function Nfc({ onChangeNfcStatus, onScan }) {
           onClick={handleNfcRead}
           className="w-full text-center font-bold cursor-pointer text-white text-2xl bg-blue-950 px-6 py-3 rounded-md"
         >
-          Scan Sekarang
+          {nfcError ? 'Scan Lagi' : 'Scan Sekarang'}
         </button>
       </div>
     </div>
