@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { BounceLoader } from "react-spinners";
 
 function Nfc({ onChangeNfcStatus, onScan }) {
-  const [nfcError, setNfcError] = useState(false);
+  const [status, setStatus] = useState("idle"); // 'idle', 'loading', 'error'
 
   const changeNfcStatus = (newStatus) => {
     onChangeNfcStatus(newStatus);
@@ -17,27 +18,26 @@ function Nfc({ onChangeNfcStatus, onScan }) {
 
     if (match) {
       const [_, nama, nim, jurusan] = match;
-
-      changeNfcData({
-        nama: nama.trim(),
-        nim: nim.trim(),
-        jurusan: jurusan.trim(),
-      });
-
+      changeNfcData({ nama: nama.trim(), nim: nim.trim(), jurusan: jurusan.trim() });
       changeNfcStatus(true);
-
+      setStatus("idle");
     } else {
-      setNfcError(true);
+      setStatus("error");
     }
   };
 
   const handleNfcRead = async () => {
-    setNfcError(false);
+    if (status === "loading") {
+      setStatus("idle"); 
+      return;
+    }
 
-    // if (!("NDEFReader" in window)) {
-    //   setNfcError(true);
-    //   return;
-    // }
+    setStatus("loading");
+
+    if (!("NDEFReader" in window)) {
+      setStatus("error");
+      return;
+    }
 
     try {
       const reader = new NDEFReader();
@@ -54,38 +54,55 @@ function Nfc({ onChangeNfcStatus, onScan }) {
       };
 
       reader.onerror = () => {
-        setNfcError(true);
+        setStatus("error");
       };
     } catch (error) {
-      console.error("Gagal scan NFC:", error);
-      setNfcError(true);
+      console.error("NFC scan failed:", error);
+      setStatus("error");
     }
   };
 
-  
   return (
     <div className="absolute top-60 w-full px-7 flex items-center justify-center">
       <div className="flex flex-col w-full justify-center items-center rounded-[12px] bg-white shadow-2xl">
-        <div className="relative w-full flex justify-center items-center p-6">
-        {nfcError ? 
-         <img src="img/whiteNFC.png" alt="NFC Icon" className="tranisiton-opacity duration-3000 ease-in blur-[2px]"/>
-         : 
-         <img src="img/NFC.png" alt="NFC Icon" className="transition-opacity duration-3000 ease-out"/>}
 
-          {nfcError && (
-            <div className="absolute inset-0 flex items-center px-3 transition-opacity justify-center text-red-500">
-              <p className=" text-center text-2xl bg-white/60 font-semibold border border-red-500 py-3 rounded-md text-red-500">
+        {/* Gambar dan status */}
+        <div className="relative w-full flex justify-center items-center p-6 min-h-[180px]">
+          <img
+            src={status === "error" ? 'img/whiteNFC.png' : 'img/NFC.png'}
+            alt="NFC Icon"
+            className={`transition-opacity duration-500 ${status === "error" ? "blur-sm" : ""}`}
+          />
+
+          {/* Error Message */}
+          {status === "error" && (
+            <div className="absolute inset-0 flex items-center justify-center px-4">
+              <p className="text-center text-xl font-semibold bg-white/70 border border-red-500 text-red-600 rounded-md px-4 py-3">
                 NFC tidak didukung atau gagal membaca!
               </p>
             </div>
           )}
+
+          {/* Loading Overlay */}
+          {status === "loading" && (
+            <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/80 rounded-[12px]" onClick={(e) => e.stopPropagation()}>
+              <div className="flex flex-col items-center space-y-3">
+                <BounceLoader color="#CFD8E5" size={50} />
+              </div>
+            </div>
+          )}
         </div>
 
+        {status === "loading" &&
+          <div className="w-full text-center font-bold text-2xl py-2 bg-gray-700 text-white">Ready to Scan</div>
+        }
         <button
           onClick={handleNfcRead}
-          className="w-full text-center active:scale-98 active:shadow-inner  hover:bg-blue-900 font-bold cursor-pointer text-white text-2xl bg-blue-950 px-6 py-3 rounded-md"
+          className="w-full text-center active:scale-98 active:shadow-inner hover:bg-blue-900 font-bold cursor-pointer text-white text-2xl bg-blue-950 px-6 py-3 rounded-bl-md rounded-br-md"
         >
-          {nfcError ? 'Scan Lagi' : 'Scan Sekarang'}
+          {status === "idle" && "Scan Sekarang"}
+          {status === "loading" && "Cancel"}
+          {status === "error" && "Scan Lagi"}
         </button>
       </div>
     </div>
