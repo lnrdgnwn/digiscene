@@ -51,6 +51,8 @@ function Nfc({ onChangeNfcStatus, onScan }) {
         }
 
         parseAndSend(nfcData);
+
+        reader.abort();
       };
 
       reader.onerror = () => {
