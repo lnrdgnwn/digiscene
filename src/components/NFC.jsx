@@ -35,9 +35,7 @@ function Nfc({ onChangeNfcStatus, onScan }) {
     setStatus("loading");
 
     if (!("NDEFReader" in window)) {
-      const dummyData = `Nama: Darrell Satriano\nNIM: 09021282328049\nJurusan: Teknik Informatika`;
-      parseAndSend(dummyData);
-      // setStatus("error");
+      setStatus("error");
       return;
     }
 
